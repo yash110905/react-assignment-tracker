@@ -2,6 +2,18 @@ import { useState } from "react";
 
 function App() {
   const [assignment, setAssignment] = useState("");
+  const [assignments, setAssignments] = useState([]);
+
+  const addAssignment = () => {
+    if (assignment.trim() === "") return;
+
+    setAssignments([
+      ...assignments,
+      assignment
+    ]);
+
+    setAssignment("");
+  };
 
   return (
     <div>
@@ -14,7 +26,21 @@ function App() {
         onChange={(e) => setAssignment(e.target.value)}
       />
 
-      <p>Assignment: {assignment}</p>
+      <button onClick={addAssignment}>
+        Add Assignment
+      </button>
+
+
+      <h2>My Assignments</h2>
+
+      <ul>
+        {assignments.map((item, index) => (
+          <li key={index}>
+            {item}
+          </li>
+        ))}
+      </ul>
+
     </div>
   );
 }
