@@ -5,6 +5,7 @@ function App() {
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("All");
 
   const [assignments, setAssignments] = useState(() => {
     const savedAssignments = localStorage.getItem("assignments");
@@ -15,7 +16,6 @@ function App() {
   });
 
 
-  // Save assignments whenever they change
   useEffect(() => {
     localStorage.setItem(
       "assignments",
@@ -30,8 +30,8 @@ function App() {
     const newAssignment = {
       id: Date.now(),
       title: assignment,
-      dueDate: dueDate,
-      priority: priority,
+      dueDate,
+      priority,
       completed: false
     };
 
@@ -69,12 +69,26 @@ function App() {
   };
 
 
-  // Search filter
-  const filteredAssignments = assignments.filter((item) =>
-    item.title
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
+  // Search + Filter logic
+  const filteredAssignments = assignments
+    .filter((item) =>
+      item.title
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    )
+    .filter((item) => {
+
+      if (filter === "Completed") {
+        return item.completed;
+      }
+
+      if (filter === "Pending") {
+        return !item.completed;
+      }
+
+      return true;
+
+    });
 
 
   return (
@@ -83,7 +97,6 @@ function App() {
       <h1>Assignment Tracker</h1>
 
 
-      {/* Add Assignment */}
       <input
         type="text"
         placeholder="Assignment name"
@@ -134,6 +147,22 @@ function App() {
       />
 
 
+      {/* Filters */}
+      <div>
+        <button onClick={() => setFilter("All")}>
+          All
+        </button>
+
+        <button onClick={() => setFilter("Completed")}>
+          Completed
+        </button>
+
+        <button onClick={() => setFilter("Pending")}>
+          Pending
+        </button>
+      </div>
+
+
       <ul>
         {filteredAssignments.map((item) => (
           <li key={item.id}>
@@ -174,7 +203,6 @@ function App() {
             >
               Delete
             </button>
-
 
           </li>
         ))}
