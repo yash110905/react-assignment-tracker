@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function App() {
-  const [title, setTitle] = useState("");
+  const [assignment, setAssignment] = useState("");
 
   return (
     <div>
@@ -10,11 +10,11 @@ function App() {
       <input
         type="text"
         placeholder="Enter assignment name"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        value={assignment}
+        onChange={(e) => setAssignment(e.target.value)}
       />
 
-      <p>You typed: {title}</p>
+      <p>Assignment: {assignment}</p>
     </div>
   );
 }
