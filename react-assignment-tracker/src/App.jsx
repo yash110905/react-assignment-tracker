@@ -2,7 +2,11 @@ import { useState } from "react";
 
 function App() {
   const [assignment, setAssignment] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [priority, setPriority] = useState("Medium");
+
   const [assignments, setAssignments] = useState([]);
+
 
   const addAssignment = () => {
     if (assignment.trim() === "") return;
@@ -10,11 +14,16 @@ function App() {
     const newAssignment = {
       id: Date.now(),
       title: assignment,
+      dueDate: dueDate,
+      priority: priority,
       completed: false
     };
 
     setAssignments([...assignments, newAssignment]);
+
     setAssignment("");
+    setDueDate("");
+    setPriority("Medium");
   };
 
 
@@ -41,21 +50,43 @@ function App() {
 
   return (
     <div>
+
       <h1>Assignment Tracker</h1>
+
 
       <input
         type="text"
-        placeholder="Enter assignment name"
+        placeholder="Assignment name"
         value={assignment}
         onChange={(e) => setAssignment(e.target.value)}
       />
+
+
+      <input
+        type="date"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+      />
+
+
+      <select
+        value={priority}
+        onChange={(e) => setPriority(e.target.value)}
+      >
+        <option>High</option>
+        <option>Medium</option>
+        <option>Low</option>
+      </select>
+
 
       <button onClick={addAssignment}>
         Add Assignment
       </button>
 
 
+
       <h2>My Assignments</h2>
+
 
       <ul>
         {assignments.map((item) => (
@@ -67,6 +98,7 @@ function App() {
               onChange={() => toggleComplete(item.id)}
             />
 
+
             <span
               style={{
                 textDecoration: item.completed
@@ -74,7 +106,15 @@ function App() {
                   : "none"
               }}
             >
-              {item.title}
+              <b>{item.title}</b>
+              <br />
+
+              Due: {item.dueDate || "No date"}
+
+              <br />
+
+              Priority: {item.priority}
+
             </span>
 
 
