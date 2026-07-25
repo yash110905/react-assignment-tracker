@@ -1,11 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [assignment, setAssignment] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("Medium");
 
-  const [assignments, setAssignments] = useState([]);
+  const [assignments, setAssignments] = useState(() => {
+    const savedAssignments = localStorage.getItem("assignments");
+
+    return savedAssignments
+      ? JSON.parse(savedAssignments)
+      : [];
+  });
+
+
+  // Save assignments whenever they change
+  useEffect(() => {
+    localStorage.setItem(
+      "assignments",
+      JSON.stringify(assignments)
+    );
+  }, [assignments]);
 
 
   const addAssignment = () => {
@@ -19,7 +34,10 @@ function App() {
       completed: false
     };
 
-    setAssignments([...assignments, newAssignment]);
+    setAssignments([
+      ...assignments,
+      newAssignment
+    ]);
 
     setAssignment("");
     setDueDate("");
@@ -29,7 +47,9 @@ function App() {
 
   const deleteAssignment = (id) => {
     setAssignments(
-      assignments.filter((item) => item.id !== id)
+      assignments.filter(
+        (item) => item.id !== id
+      )
     );
   };
 
@@ -58,20 +78,26 @@ function App() {
         type="text"
         placeholder="Assignment name"
         value={assignment}
-        onChange={(e) => setAssignment(e.target.value)}
+        onChange={(e) =>
+          setAssignment(e.target.value)
+        }
       />
 
 
       <input
         type="date"
         value={dueDate}
-        onChange={(e) => setDueDate(e.target.value)}
+        onChange={(e) =>
+          setDueDate(e.target.value)
+        }
       />
 
 
       <select
         value={priority}
-        onChange={(e) => setPriority(e.target.value)}
+        onChange={(e) =>
+          setPriority(e.target.value)
+        }
       >
         <option>High</option>
         <option>Medium</option>
@@ -95,7 +121,9 @@ function App() {
             <input
               type="checkbox"
               checked={item.completed}
-              onChange={() => toggleComplete(item.id)}
+              onChange={() =>
+                toggleComplete(item.id)
+              }
             />
 
 
@@ -119,7 +147,9 @@ function App() {
 
 
             <button
-              onClick={() => deleteAssignment(item.id)}
+              onClick={() =>
+                deleteAssignment(item.id)
+              }
             >
               Delete
             </button>
@@ -127,6 +157,7 @@ function App() {
           </li>
         ))}
       </ul>
+
 
     </div>
   );
