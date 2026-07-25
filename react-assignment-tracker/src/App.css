@@ -4,26 +4,35 @@ body {
   margin: 0;
   padding: 0;
 }
-
 #root {
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  min-height: 100vh;
 }
 
 .container {
   width: 600px;
-  margin-top: 40px;
+  margin: 40px auto;
   background: white;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
+
 h1 {
   text-align: center;
-  color: #333;
+  color: #2563eb;
 }
+
+
+h2 {
+  color: #333;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
 
 input,
 select {
@@ -32,6 +41,7 @@ select {
   border: 1px solid #ccc;
   border-radius: 6px;
 }
+
 
 button {
   padding: 10px 15px;
@@ -43,11 +53,30 @@ button {
   color: white;
 }
 
+
 button:hover {
   opacity: 0.8;
 }
 
 
+/* Search box */
+.search-box {
+  width: 30%;
+}
+
+
+/* Filter buttons */
+.filter-buttons {
+  margin: 10px 0;
+}
+
+
+.filter-buttons button {
+  margin-right: 10px;
+}
+
+
+/* Assignment list */
 ul {
   list-style: none;
   padding: 0;
@@ -62,6 +91,7 @@ li {
   display: flex;
   align-items: center;
   gap: 10px;
+  color: #333;
 }
 
 
