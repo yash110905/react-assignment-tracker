@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
   const [assignment, setAssignment] = useState("");
@@ -16,6 +17,7 @@ function App() {
   });
 
 
+  // Save assignments to Local Storage
   useEffect(() => {
     localStorage.setItem(
       "assignments",
@@ -69,7 +71,7 @@ function App() {
   };
 
 
-  // Search + Filter logic
+  // Search + Filter
   const filteredAssignments = assignments
     .filter((item) =>
       item.title
@@ -92,45 +94,50 @@ function App() {
 
 
   return (
-    <div>
+    <div className="container">
 
       <h1>Assignment Tracker</h1>
 
 
-      <input
-        type="text"
-        placeholder="Assignment name"
-        value={assignment}
-        onChange={(e) =>
-          setAssignment(e.target.value)
-        }
-      />
+      {/* Add Assignment */}
+      <div className="input-section">
+
+        <input
+          type="text"
+          placeholder="Assignment name"
+          value={assignment}
+          onChange={(e) =>
+            setAssignment(e.target.value)
+          }
+        />
 
 
-      <input
-        type="date"
-        value={dueDate}
-        onChange={(e) =>
-          setDueDate(e.target.value)
-        }
-      />
+        <input
+          type="date"
+          value={dueDate}
+          onChange={(e) =>
+            setDueDate(e.target.value)
+          }
+        />
 
 
-      <select
-        value={priority}
-        onChange={(e) =>
-          setPriority(e.target.value)
-        }
-      >
-        <option>High</option>
-        <option>Medium</option>
-        <option>Low</option>
-      </select>
+        <select
+          value={priority}
+          onChange={(e) =>
+            setPriority(e.target.value)
+          }
+        >
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
 
 
-      <button onClick={addAssignment}>
-        Add Assignment
-      </button>
+        <button onClick={addAssignment}>
+          Add Assignment
+        </button>
+
+      </div>
 
 
       <h2>My Assignments</h2>
@@ -138,6 +145,7 @@ function App() {
 
       {/* Search */}
       <input
+        className="search-box"
         type="text"
         placeholder="Search assignments..."
         value={search}
@@ -148,7 +156,8 @@ function App() {
 
 
       {/* Filters */}
-      <div>
+      <div className="filter-buttons">
+
         <button onClick={() => setFilter("All")}>
           All
         </button>
@@ -160,11 +169,15 @@ function App() {
         <button onClick={() => setFilter("Pending")}>
           Pending
         </button>
+
       </div>
 
 
+
       <ul>
+
         {filteredAssignments.map((item) => (
+
           <li key={item.id}>
 
             <input
@@ -177,12 +190,13 @@ function App() {
 
 
             <span
-              style={{
-                textDecoration: item.completed
-                  ? "line-through"
-                  : "none"
-              }}
+              className={
+                item.completed
+                  ? "assignment-info completed"
+                  : "assignment-info"
+              }
             >
+
               <b>{item.title}</b>
 
               <br />
@@ -191,12 +205,19 @@ function App() {
 
               <br />
 
-              Priority: {item.priority}
+
+              <div
+                className={`priority-${item.priority.toLowerCase()}`}
+              >
+                Priority: {item.priority}
+              </div>
+
 
             </span>
 
 
             <button
+              className="delete-btn"
               onClick={() =>
                 deleteAssignment(item.id)
               }
@@ -204,8 +225,11 @@ function App() {
               Delete
             </button>
 
+
           </li>
+
         ))}
+
       </ul>
 
 
