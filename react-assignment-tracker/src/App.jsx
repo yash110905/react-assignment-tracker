@@ -4,6 +4,7 @@ function App() {
   const [assignment, setAssignment] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("Medium");
+  const [search, setSearch] = useState("");
 
   const [assignments, setAssignments] = useState(() => {
     const savedAssignments = localStorage.getItem("assignments");
@@ -68,12 +69,21 @@ function App() {
   };
 
 
+  // Search filter
+  const filteredAssignments = assignments.filter((item) =>
+    item.title
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
+
   return (
     <div>
 
       <h1>Assignment Tracker</h1>
 
 
+      {/* Add Assignment */}
       <input
         type="text"
         placeholder="Assignment name"
@@ -110,12 +120,22 @@ function App() {
       </button>
 
 
-
       <h2>My Assignments</h2>
 
 
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search assignments..."
+        value={search}
+        onChange={(e) =>
+          setSearch(e.target.value)
+        }
+      />
+
+
       <ul>
-        {assignments.map((item) => (
+        {filteredAssignments.map((item) => (
           <li key={item.id}>
 
             <input
@@ -135,6 +155,7 @@ function App() {
               }}
             >
               <b>{item.title}</b>
+
               <br />
 
               Due: {item.dueDate || "No date"}
@@ -153,6 +174,7 @@ function App() {
             >
               Delete
             </button>
+
 
           </li>
         ))}
