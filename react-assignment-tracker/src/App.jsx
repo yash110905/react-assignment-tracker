@@ -7,13 +7,37 @@ function App() {
   const addAssignment = () => {
     if (assignment.trim() === "") return;
 
-    setAssignments([
-      ...assignments,
-      assignment
-    ]);
+    const newAssignment = {
+      id: Date.now(),
+      title: assignment,
+      completed: false
+    };
 
+    setAssignments([...assignments, newAssignment]);
     setAssignment("");
   };
+
+
+  const deleteAssignment = (id) => {
+    setAssignments(
+      assignments.filter((item) => item.id !== id)
+    );
+  };
+
+
+  const toggleComplete = (id) => {
+    setAssignments(
+      assignments.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              completed: !item.completed
+            }
+          : item
+      )
+    );
+  };
+
 
   return (
     <div>
@@ -34,9 +58,32 @@ function App() {
       <h2>My Assignments</h2>
 
       <ul>
-        {assignments.map((item, index) => (
-          <li key={index}>
-            {item}
+        {assignments.map((item) => (
+          <li key={item.id}>
+
+            <input
+              type="checkbox"
+              checked={item.completed}
+              onChange={() => toggleComplete(item.id)}
+            />
+
+            <span
+              style={{
+                textDecoration: item.completed
+                  ? "line-through"
+                  : "none"
+              }}
+            >
+              {item.title}
+            </span>
+
+
+            <button
+              onClick={() => deleteAssignment(item.id)}
+            >
+              Delete
+            </button>
+
           </li>
         ))}
       </ul>
